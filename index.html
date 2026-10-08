@@ -57,6 +57,12 @@ table.grid{border-collapse:separate;border-spacing:3px;min-width:640px;width:100
 .grid tr.gap td{height:14px}
 [hidden]{display:none!important}
 .grid .past{opacity:.6}
+.grid td.s{position:relative}
+.grid td.chg::after{content:"";position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--panel)}
+.chgbox{background:var(--panel);border:1px solid var(--accent);border-radius:8px;padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.chgbox ul{margin:0;padding-left:18px}
+.chgtitle{font-weight:800;display:flex;align-items:center;gap:8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--accent)}
 .focus .s:not(.hit){opacity:.18}
 .focus .s.hit{outline:2px solid var(--fg);outline-offset:1px}
 .count{font-size:13px;margin:0;min-height:1.2em}
@@ -102,6 +108,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
     <span class="sub">28.09 – 01.11 · Boyberry</span>
   </header>
   <div class="alertbar" id="openbar" hidden></div>
+  <div class="chgbox" id="chgbox" hidden></div>
   <nav class="tabs" role="tablist" aria-label="Ansicht">
     <button class="tab" role="tab" id="tab-schema" data-v="schema">Plan</button>
     <button class="tab" role="tab" id="tab-vandaag" data-v="vandaag">Heute</button>
@@ -155,6 +162,8 @@ const DAYS=[];D.weeks.forEach((w,wi)=>w.days.forEach((d,di)=>{
   const door=w.door.filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
   const gard=(w.gard||[]).filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
   DAYS.push({...d,wi,di,door,gard,ev:d.ev.filter(Boolean)});}));
+/* Änderungen nach Veröffentlichung: {date:"JJJJ-MM-TT", text:"…", mark:[["JJJJ-MM-TT","Name"],…]} */
+const CHANGES=[];
 const DJS={"2026-09-30": "Rubi", "2026-10-02": "Ivo Bischoff", "2026-10-03": "Konsi", "2026-10-07": "Tio Nacho", "2026-10-09": "Mikki_P", "2026-10-10": "U-Seven", "2026-10-14": "Tio Nacho", "2026-10-16": "Paderkid", "2026-10-17": "Jamez", "2026-10-21": "Valmondd", "2026-10-23": "Marc Lime", "2026-10-24": "Caramel Mafia", "2026-10-28": "Valmondd", "2026-10-30": "Mikki_P", "2026-10-31": "Jordan Snapper"};
 const djTime=di=>di===2?"22:00 – 03:00":"22:00 – 05:00";
 const longDay=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
@@ -195,6 +204,14 @@ document.getElementById("weeks").innerHTML=html;
 document.querySelectorAll("#weeks .week").forEach((wk,wi)=>{const days=D.weeks[wi].days;
   wk.querySelectorAll("tr").forEach(tr=>{if(tr.children.length!==7)return;
     [...tr.children].forEach((c,di)=>{if(days[di].iso<todayIso)c.classList.add("past");});});});
+/* changed shifts get a marker */
+document.querySelectorAll("#weeks .week").forEach((wk,wi)=>{const days=D.weeks[wi].days;
+  wk.querySelectorAll("tr").forEach(tr=>{if(tr.children.length!==7)return;
+    [...tr.children].forEach((c,di)=>{if(c.dataset.n&&CHANGES.some(ch=>ch.mark.some(([iso,n])=>iso===days[di].iso&&n===c.dataset.n)))c.classList.add("chg");});});});
+(function(){const box=document.getElementById("chgbox");if(!CHANGES.length){box.hidden=true;return;}
+  const fmt=iso=>iso.slice(8,10)+"."+iso.slice(5,7);
+  const list=[...CHANGES].sort((a,b)=>b.date.localeCompare(a.date));
+  box.innerHTML=`<span class="chgtitle"><i class="dot"></i>Änderungen</span><ul>${list.map(c=>`<li><b>${fmt(c.date)}</b> · ${esc(c.text)}</li>`).join("")}</ul>`;box.hidden=false;})();
 (function(){const n=new Date(),m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,5);setTimeout(()=>location.reload(),m-n);})();
 let sel=null;
 function applySel(){
