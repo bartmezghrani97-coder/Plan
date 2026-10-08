@@ -1,0 +1,286 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#fce5cd"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Arbeitsplan"><style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style></head><body>
+<title>Arbeitsplan Oktober 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Archivo+Narrow:wght@600;700&display=swap">
+<style>
+/* Layout: tab bar on top, five views of the same schedule; staff colors exactly as on the sheet */
+:root{
+  --bg:#f5f4f7; --panel:#ffffff; --fg:#1d1a22; --muted:#6b6575; --line:#d9d5df;
+  --head:#fce5cd; --head-fg:#1d1a22; --accent:#c2185b;
+  --ok:#1f7a4d; --ok-bg:#e3f4ea; --warn:#9a5b00; --warn-bg:#fff1d6; --bad:#b3261e; --bad-bg:#fde4e1; --info:#2f5aa8; --info-bg:#e5edfb;
+  --display:"Archivo",system-ui,sans-serif; --cell:"Archivo Narrow","Arial Narrow",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17151b; --panel:#211e27; --fg:#f1eef5; --muted:#a59fb0; --line:#3a3542;
+  --head:#f3d6b6; --head-fg:#1d1a22; --accent:#f06292;
+  --ok:#7fd8a4; --ok-bg:#163526; --warn:#f3c26b; --warn-bg:#3a2c10; --bad:#ff9b92; --bad-bg:#40191a; --info:#9dbcf5; --info-bg:#1b2a47; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17151b; --panel:#211e27; --fg:#f1eef5; --muted:#a59fb0; --line:#3a3542;
+  --head:#f3d6b6; --head-fg:#1d1a22; --accent:#f06292;
+  --ok:#7fd8a4; --ok-bg:#163526; --warn:#f3c26b; --warn-bg:#3a2c10; --bad:#ff9b92; --bad-bg:#40191a; --info:#9dbcf5; --info-bg:#1b2a47; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--display)}
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+h1{font-size:clamp(22px,5vw,30px);font-weight:800;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:18px;margin:0;font-weight:800}
+.sub,.muted{color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);padding-bottom:0;scrollbar-width:none}
+.tab{font:700 14px/1 var(--display);background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 10px 9px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.tab:focus-visible,.chip:focus-visible,.nav button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.view{display:flex;flex-direction:column;gap:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:700 13px/1 var(--cell);padding:8px 10px;border:1px solid rgba(0,0,0,.35);border-radius:4px;cursor:pointer;min-width:74px;text-align:center}
+.chip[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.week{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.scroll{overflow-x:auto}
+.kw{font-size:15px;margin:0 0 8px 3px}
+.alertbar{background:var(--bad-bg);color:var(--bad);border:1px solid currentColor;border-radius:8px;padding:10px 12px;font-size:14px;font-weight:700;display:flex;flex-direction:column;gap:4px}
+.alertbar ul{margin:0;padding-left:18px;font-weight:600}
+.grid .dj{}
+.grid .date.today{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid th.todaytag{font-family:var(--display);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.week.current{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.djline{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;font-size:14px}
+.djline .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
+table.grid{border-collapse:separate;border-spacing:3px;min-width:640px;width:100%;table-layout:fixed}
+.grid th,.grid td{font-family:var(--cell);font-size:13px;font-weight:700;text-align:center;padding:0;font-variant-numeric:tabular-nums}
+.ev{background:var(--head);color:var(--head-fg);border:1px solid #000;padding:1px 2px;font-weight:600;line-height:1.2}
+.grid th.evw{vertical-align:bottom;padding:0}
+.grid .stack{display:flex;flex-direction:column;gap:3px}
+
+.date{background:var(--head);color:var(--head-fg);border:2px solid #000;padding:5px 2px;line-height:1.2}
+.s{border:1px solid rgba(0,0,0,.45);padding:5px 2px;transition:opacity .15s}
+.s.open{border:1.5px dashed var(--accent);background:transparent!important;color:var(--accent)!important}
+.grid .lab{color:var(--fg);font-family:var(--display);font-size:13px;font-weight:800;text-align:right;vertical-align:middle}
+.grid tr.gap td{height:14px}
+[hidden]{display:none!important}
+.grid .past{opacity:.6}
+.focus .s:not(.hit){opacity:.18}
+.focus .s.hit{outline:2px solid var(--fg);outline-offset:1px}
+.count{font-size:13px;margin:0;min-height:1.2em}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.list{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.row{display:grid;grid-template-columns:92px 1fr auto;gap:10px;align-items:center;font-size:14px}
+.row .d{font-weight:700;font-variant-numeric:tabular-nums}
+.row .e{color:var(--muted);font-size:13px;min-width:0}
+.pill{display:inline-block;font:700 13px/1 var(--cell);padding:6px 8px;border-radius:4px;border:1px solid rgba(0,0,0,.35);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stats{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px}
+.stats b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nav button{font:700 14px/1 var(--display);padding:10px 12px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:6px;cursor:pointer}
+.nav button:disabled{opacity:.4;cursor:default}
+.dayhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px}
+.dayhead .big{font-size:22px;font-weight:800}
+.tag{font-size:12px;font-weight:700;background:var(--head);color:var(--head-fg);padding:4px 7px;border-radius:3px;border:1px solid #000}
+.team{display:flex;flex-direction:column;gap:6px}
+.team .m{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;font-size:14px}
+.status{font:700 12px/1 var(--display);padding:5px 8px;border-radius:999px;white-space:nowrap}
+.st-ok{color:var(--ok);background:var(--ok-bg)} .st-geregeld{color:var(--info);background:var(--info-bg)}
+.st-nakijken{color:var(--warn);background:var(--warn-bg)} .st-probleem{color:var(--bad);background:var(--bad-bg)}
+.keys{display:flex;flex-direction:column;gap:6px}
+.krow{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:96px 1fr auto;gap:4px 10px;align-items:center;font-size:14px}
+.krow.alert{border-color:currentColor}
+.krow .note{grid-column:1/-1;font-size:13px;font-weight:700}
+.krow .who{min-width:0;display:flex;flex-wrap:wrap;gap:4px 12px}
+.krow .who span{white-space:nowrap}
+.krow .who em{font-style:normal;color:var(--muted)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;font-variant-numeric:tabular-nums}
+.hrs th,.hrs td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:right}
+.hrs th:first-child,.hrs td:first-child{text-align:left}
+.hrs thead th{font-size:12px;color:var(--muted);font-weight:700}
+.hrs .flag{color:var(--bad);font-weight:800}
+.hrs small{color:var(--muted);font-weight:500}
+@media (max-width:420px){.row{grid-template-columns:80px 1fr auto}.krow{grid-template-columns:84px 1fr auto}.team .m{grid-template-columns:96px 1fr}}
+@media (prefers-reduced-motion:reduce){.s{transition:none}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>Arbeitsplan Oktober 2026</h1>
+    <span class="sub">28.09 – 01.11 · Boyberry</span>
+  </header>
+  <div class="alertbar" id="openbar" hidden></div>
+  <nav class="tabs" role="tablist" aria-label="Ansicht">
+    <button class="tab" role="tab" id="tab-schema" data-v="schema">Plan</button>
+    <button class="tab" role="tab" id="tab-vandaag" data-v="vandaag">Heute</button>
+    <button class="tab" role="tab" id="tab-persoon" data-v="persoon">Pro Person</button>
+    <button class="tab" role="tab" id="tab-sleutels" data-v="sleutels">Schlüssel</button>
+    <button class="tab" role="tab" id="tab-uren" data-v="uren">Stunden</button>
+  </nav>
+
+  <section class="view" id="v-schema" role="tabpanel">
+    <div class="legend" id="legend"></div>
+    <p class="hint">Tippe auf einen Namen, um nur seine Schichten zu sehen. Nochmal tippen zeigt wieder alles.</p>
+    <p class="count" id="count"></p>
+    <div id="weeks" style="display:flex;flex-direction:column;gap:14px"></div>
+  </section>
+
+  <section class="view" id="v-vandaag" role="tabpanel" hidden>
+    <div class="nav"><button type="button" id="dprev">← Vorheriger Tag</button><button type="button" id="dtoday">Heute</button><button type="button" id="dnext">Nächster Tag →</button></div>
+    <div class="card" id="daycard"></div>
+  </section>
+
+  <section class="view" id="v-persoon" role="tabpanel" hidden>
+    <div class="legend" id="plegend"></div>
+    <div class="card" id="pcard"></div>
+  </section>
+
+  <section class="view" id="v-sleutels" role="tabpanel" hidden>
+    <p class="hint">Öffnen: Paolo, Gabriel · Schließen: Hannes, Andrea · Bart schließt Mi, Fr und Sa.</p>
+    <div class="stats" id="kstats"></div>
+    <label class="toggle"><input type="checkbox" id="konly"> Nur Tage mit Handlungsbedarf</label>
+    <div class="keys" id="klist"></div>
+  </section>
+
+  <section class="view" id="v-uren" role="tabpanel" hidden>
+    <p class="hint">Stunden pro Woche (Mo–So), berechnet aus den Schichten im Plan. In Klammern die Anzahl der Tage.</p>
+    <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
+    <p class="hint" id="hnote"></p>
+  </section>
+</div>
+<script>
+
+const pad=n=>String(n).padStart(2,"0");
+const now=new Date();const todayIso=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+const D={"weeks": [{"days": [{"ev": [null, null], "date": "Mo. 28.09.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Enzo", "93C47D", "000000"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-09-28", "keys": {"opener": "Paolo", "closers": ["Enzo", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": ["Young Day", "2x1 <30"], "date": "Di. 29.09.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Enzo", "93C47D", "000000"], ["22:00 - 04:00", "Carlos", "000000", "FFFFFF"]], "iso": "2026-09-29", "keys": {"opener": "Paolo", "closers": ["Enzo", "Carlos"], "keyclose": [], "status": "geregeld", "note": "Hannes krank: Carlos übernimmt, Enzo hatte beide Schlüssel"}}, {"ev": [null, "Noche Latina"], "date": "Mi. 30.09.26", "shifts": [["17:45 - 23:00", "Gabriel", "FFFF00", "000000"], ["21:00 - 02:00", "Joél", "0000FF", "FFFFFF"], ["21:30 - 04:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 04:00", "Shawn", "FF9900", "000000"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-09-30", "keys": {"opener": "Gabriel", "closers": ["Bart", "Shawn", "Hannes"], "keyclose": ["Bart", "Hannes"], "status": "ok", "note": ""}}, {"ev": [null, null], "date": "Do. 01.10.26", "shifts": [["17:45 - 22:30", "Gabriel", "FFFF00", "000000"], ["21:00 - 04:00", "Joél", "0000FF", "FFFFFF"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-01", "keys": {"opener": "Gabriel", "closers": ["Joél", "Andrea"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Fr. 02.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Gabriel", "FFFF00", "000000"], ["21:30 - 06:00", "Levent", "CCCCCC", "FF0000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Enzo", "93C47D", "000000"], ["23:00 - 06:00", "Andrea", "FF0000", "FFFF00"], ["23:00 - 06:00", "Carlos", "000000", "FFFFFF"]], "iso": "2026-10-02", "keys": {"opener": "Paolo", "closers": ["Levent", "Bart", "Enzo", "Andrea", "Carlos"], "keyclose": ["Bart", "Andrea"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Sa. 03.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["21:30 - 06:00", "Levent", "CCCCCC", "FF0000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Shawn", "FF9900", "000000"], ["23:00 - 06:00", "Carlos", "000000", "FFFFFF"], ["23:00 - 06:00", "Enzo", "93C47D", "000000"]], "iso": "2026-10-03", "keys": {"opener": "Paolo", "closers": ["Levent", "Bart", "Shawn", "Carlos", "Enzo"], "keyclose": ["Bart"], "status": "ok", "note": ""}}, {"ev": ["Happy Sunday", "2x1"], "date": "So. 04.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Carlos", "000000", "FFFFFF"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-04", "keys": {"opener": "Paolo", "closers": ["Carlos", "Andrea"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}], "door": [[4, "22:00 - 06:00", "Roberto", "BF9000", "000000"], [5, "01:00 - 06:00", "Uwe T.", "00FFFF", "000000"]], "gard": []}, {"days": [{"ev": [null, null], "date": "Mo. 05.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Enzo", "93C47D", "000000"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-05", "keys": {"opener": "Paolo", "closers": ["Enzo", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": ["Young Day", "2x1 <30"], "date": "Di. 06.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Andrea", "FF0000", "FFFF00"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-06", "keys": {"opener": "Paolo", "closers": ["Andrea", "Hannes"], "keyclose": ["Andrea", "Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Noche Latina"], "date": "Mi. 07.10.26", "shifts": [["17:45 - 23:00", "Hannes", "A4C2F4", "000000"], ["21:00 - 02:00", "Joél", "0000FF", "FFFFFF"], ["21:30 - 04:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 04:00", "Levent", "CCCCCC", "FF0000"], ["22:00 - 04:00", "Shawn", "FF9900", "000000"]], "iso": "2026-10-07", "keys": {"opener": "Hannes", "closers": ["Bart", "Levent", "Shawn"], "keyclose": ["Bart"], "status": "nakijken", "note": "Hannes öffnet: nur ok, wenn sein Schlüssel auch aufschließt"}}, {"ev": [null, null], "date": "Do. 08.10.26", "shifts": [["17:45 - 22:30", "Andrea", "FF0000", "FFFF00"], ["21:00 - 04:00", "Joél", "0000FF", "FFFFFF"], ["22:00 - 04:00", "Enzo", "93C47D", "000000"]], "iso": "2026-10-08", "keys": {"opener": "Andrea", "closers": ["Joél", "Enzo"], "keyclose": [], "status": "geregeld", "note": "Andrea öffnet und gibt ihren Schlüssel an Joél; Joél gibt ihn am Sa 10.10 zurück"}}, {"ev": [null, "Play"], "date": "Fr. 09.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["21:30 - 06:00", "Levent", "CCCCCC", "FF0000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Enzo", "93C47D", "000000"], ["23:00 - 06:00", "Shawn", "FF9900", "000000"], ["23:00 - 06:00", "Carlos", "000000", "FFFFFF"]], "iso": "2026-10-09", "keys": {"opener": "Paolo", "closers": ["Levent", "Bart", "Enzo", "Shawn", "Carlos"], "keyclose": ["Bart"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Sa. 10.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["21:30 - 06:00", "Enzo", "93C47D", "000000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Diego", "CC4125", "000000"], ["23:00 - 06:00", "Carlos", "000000", "FFFFFF"], ["23:00 - 06:00", "Joél", "0000FF", "FFFFFF"]], "iso": "2026-10-10", "keys": {"opener": "Paolo", "closers": ["Enzo", "Bart", "Diego", "Carlos", "Joél"], "keyclose": ["Bart"], "status": "ok", "note": ""}}, {"ev": ["Happy Sunday", "2x1"], "date": "So. 11.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Carlos", "000000", "FFFFFF"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-11", "keys": {"opener": "Paolo", "closers": ["Carlos", "Andrea"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}], "door": [[4, "00:00 - 05:00", "Uwe T.", "00FFFF", "000000"], [5, "01:00 - 06:00", "Uwe T.", "00FFFF", "000000"]], "gard": [[4, "22:00 - 03:00", "Cristian", "00FF00", "000000"], [5, "22:00 - 03:00", "Cristian", "00FF00", "000000"]]}, {"days": [{"ev": [null, null], "date": "Mo. 12.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Joél", "0000FF", "FFFFFF"], ["22:00 - 04:00", "Enzo", "93C47D", "000000"]], "iso": "2026-10-12", "keys": {"opener": "Paolo", "closers": ["Joél", "Enzo"], "keyclose": [], "status": "geregeld", "note": "Joél schließt mit Barts Schlüssel (bekommt ihn am Sa 10.10, zurück am Mi 14.10)"}}, {"ev": ["Lights Out", "2x1 <30"], "date": "Di. 13.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Enzo", "93C47D", "000000"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-13", "keys": {"opener": "Paolo", "closers": ["Enzo", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Noche Latina"], "date": "Mi. 14.10.26", "shifts": [["17:45 - 23:00", "Hannes", "A4C2F4", "000000"], ["21:00 - 02:00", "Joél", "0000FF", "FFFFFF"], ["21:30 - 04:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 04:00", "Shawn", "FF9900", "000000"], ["22:00 - 04:00", "Carlos", "000000", "FFFFFF"]], "iso": "2026-10-14", "keys": {"opener": "Hannes", "closers": ["Bart", "Shawn", "Carlos"], "keyclose": ["Bart"], "status": "nakijken", "note": "Hannes öffnet: nur ok, wenn sein Schlüssel auch aufschließt"}}, {"ev": [null, null], "date": "Do. 15.10.26", "shifts": [["17:45 - 22:30", "Gabriel", "FFFF00", "000000"], ["21:00 - 04:00", "Andrea", "FF0000", "FFFF00"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-15", "keys": {"opener": "Gabriel", "closers": ["Andrea", "Hannes"], "keyclose": ["Andrea", "Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Fr. 16.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Gabriel", "FFFF00", "000000"], ["21:30 - 06:00", "Enzo", "93C47D", "000000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Diego", "CC4125", "000000"], ["23:00 - 06:00", "Shawn", "FF9900", "000000"], ["23:00 - 06:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-16", "keys": {"opener": "Paolo", "closers": ["Enzo", "Bart", "Diego", "Shawn", "Andrea"], "keyclose": ["Bart", "Andrea"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Sa. 17.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Gabriel", "FFFF00", "000000"], ["21:30 - 06:00", "Carlos", "000000", "FFFFFF"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Hannes", "A4C2F4", "000000"], ["23:00 - 06:00", "Andrea", "FF0000", "FFFF00"], ["23:00 - 06:00", "Enzo", "93C47D", "000000"]], "iso": "2026-10-17", "keys": {"opener": "Paolo", "closers": ["Carlos", "Bart", "Hannes", "Andrea", "Enzo"], "keyclose": ["Bart", "Hannes", "Andrea"], "status": "ok", "note": ""}}, {"ev": ["Happy Sunday", "2x1"], "date": "So. 18.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Carlos", "000000", "FFFFFF"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-18", "keys": {"opener": "Paolo", "closers": ["Carlos", "Andrea"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}], "door": [[4, "22:00 - 06:00", "Roberto", "BF9000", "000000"], [5, "01:00 - 06:00", "Uwe T.", "00FFFF", "000000"]], "gard": [[4, "22:00 - 03:00", "Cristian", "00FF00", "000000"], [5, "22:00 - 03:00", "Cristian", "00FF00", "000000"]]}, {"days": [{"ev": [null, null], "date": "Mo. 19.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Andrea", "FF0000", "FFFF00"], ["22:00 - 04:00", "Enzo", "93C47D", "000000"]], "iso": "2026-10-19", "keys": {"opener": "Paolo", "closers": ["Andrea", "Enzo"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}, {"ev": ["Young Day", "20x20"], "date": "Di. 20.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Enzo", "93C47D", "000000"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-20", "keys": {"opener": "Paolo", "closers": ["Enzo", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Noche Latina"], "date": "Mi. 21.10.26", "shifts": [["17:45 - 23:00", "Gabriel", "FFFF00", "000000"], ["21:00 - 02:00", "Joél", "0000FF", "FFFFFF"], ["21:30 - 04:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 04:00", "Shawn", "FF9900", "000000"], ["22:00 - 04:00", "Carlos", "000000", "FFFFFF"]], "iso": "2026-10-21", "keys": {"opener": "Gabriel", "closers": ["Bart", "Shawn", "Carlos"], "keyclose": ["Bart"], "status": "ok", "note": ""}}, {"ev": [null, null], "date": "Do. 22.10.26", "shifts": [["17:45 - 22:30", "Gabriel", "FFFF00", "000000"], ["21:00 - 04:00", "Joél", "0000FF", "FFFFFF"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-22", "keys": {"opener": "Gabriel", "closers": ["Joél", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Fr. 23.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["21:30 - 06:00", "Enzo", "93C47D", "000000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Hannes", "A4C2F4", "000000"], ["23:00 - 06:00", "Shawn", "FF9900", "000000"], ["23:00 - 06:00", "Gabriel", "FFFF00", "000000"]], "iso": "2026-10-23", "keys": {"opener": "Paolo", "closers": ["Enzo", "Bart", "Hannes", "Shawn", "Gabriel"], "keyclose": ["Bart", "Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Sa. 24.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["21:30 - 06:00", "Carlos", "000000", "FFFFFF"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Diego", "CC4125", "000000"], ["23:00 - 06:00", "Gabriel", "FFFF00", "000000"], ["23:00 - 06:00", "Enzo", "93C47D", "000000"]], "iso": "2026-10-24", "keys": {"opener": "Paolo", "closers": ["Carlos", "Bart", "Diego", "Gabriel", "Enzo"], "keyclose": ["Bart"], "status": "ok", "note": ""}}, {"ev": ["Happy Sunday", "2x1"], "date": "So. 25.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Carlos", "000000", "FFFFFF"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-25", "keys": {"opener": "Paolo", "closers": ["Carlos", "Andrea"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}], "door": [[4, "22:00 - 06:00", "Roberto", "BF9000", "000000"], [5, "01:00 - 06:00", "Uwe T.", "00FFFF", "000000"]], "gard": [[4, "22:00 - 03:00", "Cristian", "00FF00", "000000"], [5, "22:00 - 03:00", "Cristian", "00FF00", "000000"]]}, {"days": [{"ev": [null, null], "date": "Mo. 26.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Carlos", "000000", "FFFFFF"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-26", "keys": {"opener": "Paolo", "closers": ["Carlos", "Andrea"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}, {"ev": ["Young Day", "2x1 <30"], "date": "Di. 27.10.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["21:00 - 04:00", "Carlos", "000000", "FFFFFF"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-27", "keys": {"opener": "Paolo", "closers": ["Carlos", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Noche Latina"], "date": "Mi. 28.10.26", "shifts": [["17:45 - 23:00", "Gabriel", "FFFF00", "000000"], ["21:00 - 02:00", "Joél", "0000FF", "FFFFFF"], ["21:30 - 04:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 04:00", "Shawn", "FF9900", "000000"], ["22:00 - 04:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-28", "keys": {"opener": "Gabriel", "closers": ["Bart", "Shawn", "Andrea"], "keyclose": ["Bart", "Andrea"], "status": "ok", "note": ""}}, {"ev": [null, null], "date": "Do. 29.10.26", "shifts": [["17:45 - 22:30", "Gabriel", "FFFF00", "000000"], ["21:00 - 04:00", "Joél", "0000FF", "FFFFFF"], ["22:00 - 04:00", "Hannes", "A4C2F4", "000000"]], "iso": "2026-10-29", "keys": {"opener": "Gabriel", "closers": ["Joél", "Hannes"], "keyclose": ["Hannes"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Fr. 30.10.26", "shifts": [["17:45 - 00:00", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Gabriel", "FFFF00", "000000"], ["21:30 - 06:00", "Hannes", "A4C2F4", "000000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Diego", "CC4125", "000000"], ["23:00 - 06:00", "Shawn", "FF9900", "000000"], ["23:00 - 06:00", "Andrea", "FF0000", "FFFF00"]], "iso": "2026-10-30", "keys": {"opener": "Paolo", "closers": ["Hannes", "Bart", "Diego", "Shawn", "Andrea"], "keyclose": ["Hannes", "Bart", "Andrea"], "status": "ok", "note": ""}}, {"ev": [null, "Play"], "date": "Sa. 31.10.26", "shifts": [["17:45 - 00:00", "Gabriel", "FFFF00", "000000"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["21:30 - 06:00", "Hannes", "A4C2F4", "000000"], ["21:30 - 06:00", "Bart", "45818E", "FFFFFF"], ["22:00 - 06:00", "Levent", "CCCCCC", "FF0000"], ["23:00 - 06:00", "OPEN", "FFFFFF", "000000"], ["23:00 - 06:00", "OPEN", "FFFFFF", "000000"]], "iso": "2026-10-31", "keys": {"opener": "Gabriel", "closers": ["Hannes", "Bart", "Levent"], "keyclose": ["Hannes", "Bart"], "status": "ok", "note": ""}}, {"ev": ["Happy Sunday", "2x1"], "date": "So. 01.11.26", "shifts": [["17:45 - 22:30", "Paolo", "EAD1DC", "FF00FF"], ["20:30 - 04:00", "Andrea", "FF0000", "FFFF00"], ["22:00 - 04:00", "Enzo", "93C47D", "000000"]], "iso": "2026-11-01", "keys": {"opener": "Paolo", "closers": ["Andrea", "Enzo"], "keyclose": ["Andrea"], "status": "ok", "note": ""}}], "door": [[4, "22:00 - 06:00", "Roberto", "BF9000", "000000"], [5, "01:00 - 06:00", "Uwe T.", "00FFFF", "000000"]], "gard": [[4, "22:00 - 03:00", "Cristian", "00FF00", "000000"], [5, "22:00 - 03:00", "Cristian", "00FF00", "000000"]]}], "legend": [["Carlos", "000000", "FFFFFF"], ["Hannes", "A4C2F4", "000000"], ["Gabriel", "FFFF00", "000000"], ["Shawn", "FF9900", "000000"], ["Joél", "0000FF", "FFFFFF"], ["Uwe T.", "00FFFF", "000000"], ["Levent", "CCCCCC", "FF0000"], ["Bart", "45818E", "FFFFFF"], ["Enzo", "93C47D", "000000"], ["Paolo", "EAD1DC", "FF00FF"], ["Andrea", "FF0000", "FFFF00"], ["Cristian", "00FF00", "000000"], ["Roberto", "BF9000", "000000"], ["Diego", "CC4125", "000000"]]};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const COL={};D.legend.forEach(([n,f,fc])=>COL[n]=[f,fc]);
+const pill=(n,t)=>{const c=COL[n]||["ffffff","000000"];return `<span class="pill" style="background:#${c[0]};color:#${c[1]}">${esc(t??n)}</span>`;};
+const mins=t=>{const [h,m]=t.split(":").map(Number);return h*60+m};
+const hours=s=>{let [a,b]=s.split("-").map(x=>mins(x.trim()));if(b<=a)b+=1440;return (b-a)/60};
+const fmtH=h=>(Math.round(h*10)/10).toString().replace(".",",");
+const DAYS=[];D.weeks.forEach((w,wi)=>w.days.forEach((d,di)=>{
+  const door=w.door.filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
+  const gard=(w.gard||[]).filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
+  DAYS.push({...d,wi,di,door,gard,ev:d.ev.filter(Boolean)});}));
+const DJS={"2026-09-30": "Rubi", "2026-10-02": "Ivo Bischoff", "2026-10-03": "Konsi", "2026-10-07": "Tio Nacho", "2026-10-09": "Mikki_P", "2026-10-10": "U-Seven", "2026-10-14": "Tio Nacho", "2026-10-16": "Paderkid", "2026-10-17": "Jamez", "2026-10-21": "Valmondd", "2026-10-23": "Marc Lime", "2026-10-24": "Caramel Mafia", "2026-10-28": "Valmondd", "2026-10-30": "Mikki_P", "2026-10-31": "Jordan Snapper"};
+const djTime=di=>di===2?"22:00 – 03:00":"22:00 – 05:00";
+const longDay=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
+const KW=w=>"Woche "+(40+w);
+const wRange=w=>`${D.weeks[w].days[0].date.split(" ")[1].slice(0,5)} – ${D.weeks[w].days[6].date.split(" ")[1].slice(0,5)}`;
+const ST={ok:"ok",geregeld:"geregelt",nakijken:"prüfen",probleem:"Problem"};
+const shortDate=d=>d.date.replace(/\.26$/,"");
+
+/* Schema */
+const cell=(t,n,f,fc)=> n==="OPEN" ? `<td class="s open" title="Noch offen">${esc(t)}</td>`
+  : `<td class="s" data-n="${esc(n)}" title="${esc(n)}" style="background:#${f};color:#${fc}">${esc(t)}</td>`;
+const chips=id=>{document.getElementById(id).innerHTML=D.legend.map(([n,f,fc])=>
+  `<button type="button" class="chip" data-n="${esc(n)}" aria-pressed="false" style="background:#${f};color:#${fc}">${esc(n)}</button>`).join("");};
+chips("legend");chips("plegend");
+let html="";
+D.weeks.forEach((w,wi)=>{
+  const max=Math.max(...w.days.map(d=>d.shifts.length));
+  let t=`<div class="week${w.days.some(d=>d.iso===todayIso)?" current":""}"><div class="kw"><b>${KW(wi)}</b> <span class="muted">${wRange(wi)}</span></div><div class="scroll"><table class="grid">`;
+  const E="";
+  if(w.days.some(d=>d.iso===todayIso))t+="<tr>"+E+w.days.map(d=>d.iso===todayIso?'<th class="todaytag">Heute</th>':"<th></th>").join("")+"</tr>";
+  /* one header cell per day: a stack of boxes sitting on the date; DJ takes the empty top slot (Mi/Fr/Sa) */
+  const box=(x,cls)=>`<div class="ev${cls}">${esc(x)}</div>`;
+  t+="<tr>"+E+w.days.map(d=>{const dj=DJS[d.iso]?"DJ "+DJS[d.iso]:null;const st=[];
+    if(d.ev[0]&&dj)st.push(box(dj," top dj"));
+    if(d.ev[0])st.push(box(d.ev[0]," top"));else if(dj)st.push(box(dj," top dj"));
+    if(d.ev[1])st.push(box(d.ev[1],""));
+    return `<th class="evw"><div class="stack">${st.join("")}</div></th>`;}).join("")+"</tr>";
+  t+="<tr>"+E+w.days.map(d=>`<th class="date${d.iso===todayIso?" today":""}">${esc(d.date)}</th>`).join("")+"</tr>";
+  for(let r=0;r<max;r++){t+="<tr>"+E+w.days.map(d=>d.shifts[r]?cell(...d.shifts[r]):"<td></td>").join("")+"</tr>";}
+  const extra=[["Garderobe",w.gard||[]],["Tür",w.door]].filter(x=>x[1].length);
+  if(extra.length){t+=`<tr class="gap"><td colspan="7"></td></tr>`;
+    extra.forEach(([lab,arr])=>{t+="<tr>";
+      for(let c=0;c<7;c++){const x=arr.find(z=>z[0]===c);t+=x?cell(x[1],x[2],x[3],x[4]):"<td></td>";}t+="</tr>";});}
+  html+=t+"</table></div></div>";
+});
+document.getElementById("weeks").innerHTML=html;
+/* days before today are slightly faded; recalculated each time the page opens */
+document.querySelectorAll("#weeks .week").forEach((wk,wi)=>{const days=D.weeks[wi].days;
+  wk.querySelectorAll("tr").forEach(tr=>{if(tr.children.length!==7)return;
+    [...tr.children].forEach((c,di)=>{if(days[di].iso<todayIso)c.classList.add("past");});});});
+(function(){const n=new Date(),m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,0,0,5);setTimeout(()=>location.reload(),m-n);})();
+let sel=null;
+function applySel(){
+  const v=document.getElementById("v-schema");v.classList.toggle("focus",!!sel);
+  document.querySelectorAll("#legend .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.n===sel));
+  let k=0;v.querySelectorAll(".s[data-n]").forEach(td=>{const h=td.dataset.n===sel;td.classList.toggle("hit",h);if(h)k++;});
+  document.getElementById("count").textContent=sel?`${sel}: ${k} Schicht${k===1?"":"en"} in diesem Zeitraum`:"";}
+document.getElementById("legend").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;sel=sel===b.dataset.n?null:b.dataset.n;applySel();});
+
+/* Vandaag */
+let todayIdx=DAYS.findIndex(d=>d.iso===todayIso);
+if(todayIdx<0)todayIdx=todayIso<DAYS[0].iso?0:DAYS.length-1;
+let di=todayIdx;
+const stLabel={ok:"Schlüssel ok",geregeld:"Schlüssel geregelt",nakijken:"Schlüssel prüfen",probleem:"Problem mit dem Schlüssel"};
+function renderDay(){
+  const d=DAYS[di];const k=d.keys;
+  const team=d.shifts.map(([t,n])=>`<div class="m">${n==="OPEN"?'<span class="pill" style="border-style:dashed">Noch offen</span>':pill(n)}<span>${esc(t)} <span class="muted">· ${fmtH(hours(t))} Std.</span></span></div>`).join("");
+  const gard=d.gard.length?`<div class="muted" style="font-weight:700">Garderobe</div><div class="team">${d.gard.map(([t,n])=>`<div class="m">${pill(n)}<span>${esc(t)}</span></div>`).join("")}</div>`:"";
+  const door=d.door.length?`<div class="muted" style="font-weight:700">Tür</div><div class="team">${d.door.map(([t,n])=>`<div class="m">${pill(n)}<span>${esc(t)}</span></div>`).join("")}</div>`:"";
+  const label=d.iso===todayIso?"Heute":(d.iso<todayIso?"Vorbei":"Kommt noch");
+  document.getElementById("daycard").innerHTML=`
+    <div class="dayhead"><span class="big">${longDay[d.di]} ${shortDate(d).split(" ")[1]}</span><span class="muted">${label} · ${KW(d.wi)}</span>${d.ev.map(e=>`<span class="tag">${esc(e)}</span>`).join("")}</div>
+    ${DJS[d.iso]?`<div class="djline"><span class="lbl">DJ</span><b>${esc(DJS[d.iso])}</b><span class="muted">${djTime(d.di)}</span></div>`:""}<div class="team">${team}</div>${gard}${door}
+    <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:14px;border-top:1px solid var(--line);padding-top:10px">
+      <span class="status st-${k.status}">${stLabel[k.status]}</span>
+      <span>Öffnet: <b>${esc(k.opener)}</b></span><span>Schließt mit Schlüssel: <b>${esc(k.keyclose.join(", ")||"niemand")}</b></span></div>
+    ${k.note?`<div class="st-${k.status}" style="background:none;font-weight:700;font-size:14px">${esc(k.note)}</div>`:""}`;
+  document.getElementById("dprev").disabled=di===0;document.getElementById("dnext").disabled=di===DAYS.length-1;}
+document.getElementById("dprev").onclick=()=>{if(di>0){di--;renderDay();}};
+document.getElementById("dnext").onclick=()=>{if(di<DAYS.length-1){di++;renderDay();}};
+document.getElementById("dtoday").onclick=()=>{di=todayIdx;renderDay();};
+renderDay();
+
+/* Per persoon */
+let psel="Bart";
+function renderPerson(){
+  document.querySelectorAll("#plegend .chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.n===psel));
+  const items=[];DAYS.forEach(d=>{[...d.shifts,...d.door,...d.gard].forEach(([t,n])=>{if(n===psel)items.push({d,t});});});
+  const tot=items.reduce((s,x)=>s+hours(x.t),0);
+  document.getElementById("pcard").innerHTML=`<div class="dayhead"><h2>${esc(psel)}</h2><span class="muted">${items.length} Schicht${items.length===1?"":"en"} · ${fmtH(tot)} Stunden</span></div>`+
+   (items.length?`<ul class="list">${items.map(({d,t})=>`<li class="row"><span class="d">${esc(shortDate(d))}</span><span class="e">${KW(d.wi)}${d.ev.length?" · ":""}${esc(d.ev.join(" · "))}</span>${pill(psel,t)}</li>`).join("")}</ul>`:'<p class="muted">Steht in diesem Zeitraum nicht im Plan.</p>');}
+document.getElementById("plegend").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;psel=b.dataset.n;renderPerson();});
+renderPerson();
+
+/* Sleutels */
+function renderKeys(){
+  const only=document.getElementById("konly").checked;
+  const c={ok:0,geregeld:0,nakijken:0,probleem:0};DAYS.forEach(d=>c[d.keys.status]++);
+  document.getElementById("kstats").innerHTML=`<span><b>${c.ok}</b> ok</span><span><b>${c.geregeld}</b> geregelt</span><span><b>${c.nakijken}</b> prüfen</span><span><b>${c.probleem}</b> Problem</span>`;
+  document.getElementById("klist").innerHTML=DAYS.filter(d=>!only||d.keys.status!=="ok").map(d=>{const k=d.keys;const al=k.status!=="ok";
+    return `<div class="krow${al?" alert st-"+k.status:""}" ${al?'style="background:var(--panel)"':""}><span class="d" style="font-weight:700;color:var(--fg)">${esc(shortDate(d))}</span>
+    <span class="who" style="color:var(--fg)"><span><em>Öffnet</em> ${esc(k.opener)}</span><span><em>Schließt</em> ${esc(k.keyclose.join(", ")||"niemand")}</span></span>
+    <span class="status st-${k.status}">${ST[k.status]}</span>${k.note?`<span class="note st-${k.status}" style="background:none">${esc(k.note)}</span>`:""}</div>`;}).join("");}
+document.getElementById("konly").addEventListener("change",renderKeys);renderKeys();
+
+/* Uren */
+(function(){
+  const names=D.legend.map(x=>x[0]);const W=D.weeks.length;
+  const tbl={};names.forEach(n=>tbl[n]=Array.from({length:W},()=>({h:0,days:new Set()})));
+  DAYS.forEach(d=>[...d.shifts,...d.door,...d.gard].forEach(([t,n])=>{if(tbl[n]){tbl[n][d.wi].h+=hours(t);tbl[n][d.wi].days.add(d.iso);}}));
+  const wl=D.weeks.map((w,i)=>`${KW(i)}<br><small>${wRange(i)}</small>`);
+  const LIMIT={Carlos:{days:3},Shawn:{days:2},"Joél":{days:2}};
+  let h=`<thead><tr><th>Name</th>${wl.map(x=>`<th>${x}</th>`).join("")}<th>Ø pro Woche</th></tr></thead><tbody>`;
+  names.forEach(n=>{const r=tbl[n];const tot=r.reduce((s,x)=>s+x.h,0);if(!tot)return;
+    h+=`<tr><td>${pill(n)}</td>${r.map(x=>{const over=LIMIT[n]&&x.days.size>LIMIT[n].days;
+      return `<td class="${over?"flag":""}">${x.h?fmtH(x.h):"–"} <small>(${x.days.size})</small></td>`;}).join("")}<td><b>${fmtH(tot/W)}</b></td></tr>`;});
+  document.getElementById("hrs").innerHTML=h+"</tbody>";
+  document.getElementById("hnote").textContent="Rot: mehr Tage als vereinbart (Carlos max. 3, Shawn und Joél 2). Hannes wollte etwa 21 Stunden pro Woche.";
+})();
+
+/* Offene Schichten */
+(function(){const open=[];DAYS.forEach(d=>d.shifts.forEach(([t,n])=>{if(n==="OPEN"&&d.iso>=todayIso)open.push({d,t});}));
+  const bar=document.getElementById("openbar");if(!open.length){bar.hidden=true;return;}
+  const g={};open.forEach(({d,t})=>{const k=shortDate(d)+", "+t;g[k]=(g[k]||0)+1;});
+  bar.innerHTML=`<span>${open.length} Schicht${open.length===1?"":"en"} noch offen</span><ul>${Object.entries(g).map(([k,c])=>`<li>${esc(k)}${c>1?` (${c}×)`:""}</li>`).join("")}</ul>`;bar.hidden=false;})();
+function scrollToday(){const th=document.querySelector("#weeks .date.today");if(!th)return;const wk=th.closest(".week");
+  wk.scrollIntoView({block:"start"});const sc=th.closest(".scroll");sc.scrollLeft=Math.max(0,th.offsetLeft-sc.clientWidth/2+th.offsetWidth/2);}
+
+/* Tabs */
+const VIEWS=["schema","vandaag","persoon","sleutels","uren"];
+function show(v){if(!VIEWS.includes(v))v="schema";
+  VIEWS.forEach(x=>{document.getElementById("v-"+x).hidden=x!==v;document.getElementById("tab-"+x).setAttribute("aria-selected",x===v);});
+  try{localStorage.setItem("ap-view",v)}catch(e){}}
+document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b){show(b.dataset.v);if(b.dataset.v==="schema")scrollToday();}});
+let start=(location.hash||"").slice(1);if(!VIEWS.includes(start)){try{start=localStorage.getItem("ap-view")||"schema"}catch(e){start="schema"}}
+show(start);
+if(start==="schema")requestAnimationFrame(scrollToday);
+</script>
+</body></html>
