@@ -177,7 +177,7 @@ const COL={};D.legend.forEach(([n,f,fc])=>COL[n]=[f,fc]);
 const pill=(n,t)=>{const c=COL[n]||["ffffff","000000"];return `<span class="pill" style="background:#${c[0]};color:#${c[1]}">${esc(t??n)}</span>`;};
 const mins=t=>{const [h,m]=t.split(":").map(Number);return h*60+m};
 const hours=s=>{let [a,b]=s.split("-").map(x=>mins(x.trim()));if(b<=a)b+=1440;return (b-a)/60};
-const fmtH=h=>(Math.round(h*10)/10).toString().replace(".",",");
+const fmtH=h=>(Math.round(h*100)/100).toString().replace(".",",");
 const DAYS=[];D.weeks.forEach((w,wi)=>w.days.forEach((d,di)=>{
   const door=w.door.filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
   const gard=(w.gard||[]).filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
