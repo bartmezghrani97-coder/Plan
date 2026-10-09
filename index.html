@@ -53,10 +53,10 @@ h2{font-size:18px;margin:0;font-weight:800}
 .week.current{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .week{scroll-margin-top:calc(14px + env(safe-area-inset-top,0px))}
 .scroll{position:relative;padding:5px}
-.todayframe{position:absolute;border:2.5px solid var(--accent);border-radius:8px;pointer-events:none}
+.todayframe{position:absolute;border:2px solid var(--accent);border-radius:6px;pointer-events:none;box-sizing:border-box}
 .djline{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;font-size:14px}
 .djline .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
-table.grid{border-collapse:separate;border-spacing:3px;min-width:640px;width:100%;table-layout:fixed}
+table.grid{border-collapse:separate;border-spacing:6px 3px;min-width:640px;width:100%;table-layout:fixed}
 .grid th,.grid td{font-family:var(--cell);font-size:13px;font-weight:700;text-align:center;padding:0;font-variant-numeric:tabular-nums}
 .ev{background:var(--head);color:var(--head-fg);border:1px solid #000;padding:1px 2px;font-weight:600;line-height:1.2}
 .grid th.evw{vertical-align:bottom;padding:0}
@@ -320,9 +320,10 @@ function frameToday(){document.querySelectorAll(".todayframe").forEach(x=>x.remo
   const cells=[...tbl.rows].map(r=>r.cells.length===7?r.cells[ci]:null).filter(c=>c&&c.textContent.trim());
   if(!cells.length)return;const p=sc.getBoundingClientRect(),a=cells[0].getBoundingClientRect(),b=cells[cells.length-1].getBoundingClientRect();
   const f=document.createElement("div");f.className="todayframe";
-  f.style.left=(a.left-p.left+sc.scrollLeft-4)+"px";f.style.top=(a.top-p.top+sc.scrollTop-4)+"px";
-  f.style.width=(a.width+8)+"px";f.style.height=(b.bottom-a.top+8)+"px";sc.appendChild(f);}
+  f.style.left=(a.left-p.left+sc.scrollLeft-3.5)+"px";f.style.top=(a.top-p.top+sc.scrollTop-4)+"px";
+  f.style.width=(a.width+7)+"px";f.style.height=(b.bottom-a.top+8)+"px";sc.appendChild(f);}
 window.addEventListener("resize",frameToday);
+if(window.ResizeObserver){const ro=new ResizeObserver(()=>frameToday());document.querySelectorAll("#weeks table").forEach(t=>ro.observe(t));}
 function scrollToday(){const th=document.querySelector("#weeks .date.today");if(!th)return;const wk=th.closest(".week");
   wk.scrollIntoView({block:"start"});const sc=th.closest(".scroll");sc.scrollLeft=Math.max(0,th.offsetLeft-sc.clientWidth/2+th.offsetWidth/2);}
 
