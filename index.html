@@ -230,7 +230,10 @@ function renderDay(){
   const team=d.shifts.map(([t,n])=>`<div class="m">${n==="OPEN"?'<span class="pill" style="border-style:dashed">Noch offen</span>':pill(n)}<span>${esc(t)} <span class="muted">· ${fmtH(hours(t))} Std.</span></span></div>`).join("");
   const gard=d.gard.length?`<div class="muted" style="font-weight:700">Garderobe</div><div class="team">${d.gard.map(([t,n])=>`<div class="m">${pill(n)}<span>${esc(t)}</span></div>`).join("")}</div>`:"";
   const door=d.door.length?`<div class="muted" style="font-weight:700">Tür</div><div class="team">${d.door.map(([t,n])=>`<div class="m">${pill(n)}<span>${esc(t)}</span></div>`).join("")}</div>`:"";
-  const label=d.iso===todayIso?"Heute":(d.iso<todayIso?"Vorbei":"Kommt noch");
+  const diff=Math.round((Date.parse(d.iso)-Date.parse(todayIso))/864e5);
+  const REL={"-2":"Vorgestern","-1":"Gestern","0":"Heute","1":"Morgen","2":"Übermorgen"};
+  const label=REL[diff]||(diff<0?"Vorbei":"Kommt noch");
+  const tb=document.getElementById("dtoday");tb.textContent=REL[diff]||shortDate(d);tb.title=diff===0?"":"Zurück zu heute";
   document.getElementById("daycard").innerHTML=`
     <div class="dayhead"><span class="big">${longDay[d.di]} ${shortDate(d).split(" ")[1]}</span><span class="muted">${label} · ${KW(d.wi)}</span>${d.ev.map(e=>`<span class="tag">${esc(e)}</span>`).join("")}</div>
     ${DJS[d.iso]?`<div class="djline"><span class="lbl">DJ</span><b>${esc(DJS[d.iso])}</b><span class="muted">${djTime(d.di)}</span></div>`:""}<div class="team">${team}</div>${gard}${door}
