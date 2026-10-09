@@ -52,6 +52,8 @@ h2{font-size:18px;margin:0;font-weight:800}
 .grid th.todaytag{font-family:var(--display);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800}
 .week.current{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .week{scroll-margin-top:calc(14px + env(safe-area-inset-top,0px))}
+.scroll{position:relative;padding:5px}
+.todayframe{position:absolute;border:2.5px solid var(--accent);border-radius:8px;pointer-events:none}
 .djline{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;font-size:14px}
 .djline .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
 table.grid{border-collapse:separate;border-spacing:3px;min-width:640px;width:100%;table-layout:fixed}
@@ -311,6 +313,16 @@ document.getElementById("konly").addEventListener("change",renderKeys);renderKey
   const bar=document.getElementById("openbar");if(!open.length){bar.hidden=true;return;}
   const g={};open.forEach(({d,t})=>{const k=shortDate(d)+", "+t;g[k]=(g[k]||0)+1;});
   bar.innerHTML=`<span>${open.length} Schicht${open.length===1?"":"en"} noch offen</span><ul>${Object.entries(g).map(([k,c])=>`<li>${esc(k)}${c>1?` (${c}×)`:""}</li>`).join("")}</ul>`;bar.hidden=false;})();
+/* frame around today's whole column */
+function frameToday(){document.querySelectorAll(".todayframe").forEach(x=>x.remove());
+  const th=document.querySelector("#weeks .date.today");if(!th||!th.offsetParent)return;
+  const tbl=th.closest("table"),sc=th.closest(".scroll"),ci=th.cellIndex;
+  const cells=[...tbl.rows].map(r=>r.cells.length===7?r.cells[ci]:null).filter(c=>c&&c.textContent.trim());
+  if(!cells.length)return;const p=sc.getBoundingClientRect(),a=cells[0].getBoundingClientRect(),b=cells[cells.length-1].getBoundingClientRect();
+  const f=document.createElement("div");f.className="todayframe";
+  f.style.left=(a.left-p.left+sc.scrollLeft-4)+"px";f.style.top=(a.top-p.top+sc.scrollTop-4)+"px";
+  f.style.width=(a.width+8)+"px";f.style.height=(b.bottom-a.top+8)+"px";sc.appendChild(f);}
+window.addEventListener("resize",frameToday);
 function scrollToday(){const th=document.querySelector("#weeks .date.today");if(!th)return;const wk=th.closest(".week");
   wk.scrollIntoView({block:"start"});const sc=th.closest(".scroll");sc.scrollLeft=Math.max(0,th.offsetLeft-sc.clientWidth/2+th.offsetWidth/2);}
 
@@ -319,11 +331,12 @@ const VIEWS=["start","schema","vandaag","persoon","sleutels","uren"];
 function show(v){if(!VIEWS.includes(v))v="schema";
   VIEWS.forEach(x=>{document.getElementById("v-"+x).hidden=x!==v;document.getElementById("tab-"+x).setAttribute("aria-selected",x===v);});
   try{localStorage.setItem("ap-view",v)}catch(e){}}
-document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b){show(b.dataset.v);if(b.dataset.v==="schema")scrollToday();}});
+document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b){show(b.dataset.v);if(b.dataset.v==="schema"){frameToday();scrollToday();}}});
 let start=(location.hash||"").slice(1);if(!VIEWS.includes(start))start="start";
 document.getElementById("todaynum").textContent=pad(now.getDate());
-document.querySelector(".tiles").addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;show(t.dataset.go);window.scrollTo(0,0);if(t.dataset.go==="schema")scrollToday();});
+document.querySelector(".tiles").addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;show(t.dataset.go);window.scrollTo(0,0);if(t.dataset.go==="schema"){frameToday();scrollToday();}});
 show(start);
 if(start==="schema")requestAnimationFrame(scrollToday);
+requestAnimationFrame(frameToday);document.fonts&&document.fonts.ready.then(frameToday);
 </script>
 </body></html>
