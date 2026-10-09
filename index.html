@@ -233,7 +233,7 @@ function renderDay(){
   const diff=Math.round((Date.parse(d.iso)-Date.parse(todayIso))/864e5);
   const REL={"-2":"Vorgestern","-1":"Gestern","0":"Heute","1":"Morgen","2":"Übermorgen"};
   const label=REL[diff]||(diff<0?"Vorbei":"Kommt noch");
-  const tb=document.getElementById("dtoday");tb.textContent=REL[diff]||shortDate(d);tb.title=diff===0?"":"Zurück zu heute";
+  const tb=document.getElementById("dtoday");tb.textContent=REL[diff]||"Heute";tb.title=diff===0?"":"Zurück zu heute";
   document.getElementById("daycard").innerHTML=`
     <div class="dayhead"><span class="big">${longDay[d.di]} ${shortDate(d).split(" ")[1]}</span><span class="muted">${label} · ${KW(d.wi)}</span>${d.ev.map(e=>`<span class="tag">${esc(e)}</span>`).join("")}</div>
     ${DJS[d.iso]?`<div class="djline"><span class="lbl">DJ</span><b>${esc(DJS[d.iso])}</b><span class="muted">${djTime(d.di)}</span></div>`:""}<div class="team">${team}</div>${gard}${door}
