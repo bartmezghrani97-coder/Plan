@@ -144,7 +144,6 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   <section class="view" id="v-uren" role="tabpanel" hidden>
     <p class="hint">Stunden pro Woche (Mo–So), berechnet aus den Schichten im Plan. In Klammern die Anzahl der Tage.</p>
     <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
-    <p class="hint" id="hnote"></p>
   </section>
 </div>
 <script>
@@ -279,7 +278,7 @@ document.getElementById("konly").addEventListener("change",renderKeys);renderKey
     h+=`<tr><td>${pill(n)}</td>${r.map(x=>{const over=LIMIT[n]&&x.days.size>LIMIT[n].days;
       return `<td class="${over?"flag":""}">${x.h?fmtH(x.h):"–"} <small>(${x.days.size})</small></td>`;}).join("")}<td><b>${fmtH(tot/W)}</b></td></tr>`;});
   document.getElementById("hrs").innerHTML=h+"</tbody>";
-  document.getElementById("hnote").textContent="Rot: mehr Tage als vereinbart (Carlos max. 3, Shawn und Joél 2). Hannes wollte etwa 21 Stunden pro Woche.";
+  
 })();
 
 /* Offene Schichten */
