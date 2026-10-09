@@ -5,20 +5,21 @@
 <style>
 /* Layout: tab bar on top, five views of the same schedule; staff colors exactly as on the sheet */
 :root{
-  --bg:#f5f4f7; --panel:#ffffff; --fg:#1d1a22; --muted:#6b6575; --line:#d9d5df;
+  --bg:#fde9e1; --bggrad:radial-gradient(120% 60% at 0% 0%,#ffd9b8 0%,transparent 60%),radial-gradient(90% 60% at 100% 10%,#ffc4e1 0%,transparent 60%),radial-gradient(120% 70% at 50% 100%,#d9d0ff 0%,transparent 65%),linear-gradient(170deg,#fff1e6,#fbe1ef 50%,#ece6ff); --panel:#ffffff; --fg:#1d1a22; --muted:#6b6575; --line:#d9d5df;
   --head:#fce5cd; --head-fg:#1d1a22; --accent:#c2185b;
   --ok:#1f7a4d; --ok-bg:#e3f4ea; --warn:#9a5b00; --warn-bg:#fff1d6; --bad:#b3261e; --bad-bg:#fde4e1; --info:#2f5aa8; --info-bg:#e5edfb;
   --display:"Archivo",system-ui,sans-serif; --cell:"Archivo Narrow","Arial Narrow",Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#17151b; --panel:#211e27; --fg:#f1eef5; --muted:#a59fb0; --line:#3a3542;
+  --bg:#1a1020; --bggrad:radial-gradient(120% 60% at 0% 0%,#4a2340 0%,transparent 60%),radial-gradient(90% 60% at 100% 10%,#3b1f5c 0%,transparent 60%),radial-gradient(120% 70% at 50% 100%,#1f2a5c 0%,transparent 65%),linear-gradient(170deg,#1c1222,#22132b 50%,#141a30); --panel:#241c2b; --fg:#f1eef5; --muted:#a59fb0; --line:#3a3542;
   --head:#f3d6b6; --head-fg:#1d1a22; --accent:#f06292;
   --ok:#7fd8a4; --ok-bg:#163526; --warn:#f3c26b; --warn-bg:#3a2c10; --bad:#ff9b92; --bad-bg:#40191a; --info:#9dbcf5; --info-bg:#1b2a47; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#17151b; --panel:#211e27; --fg:#f1eef5; --muted:#a59fb0; --line:#3a3542;
+  --bg:#1a1020; --bggrad:radial-gradient(120% 60% at 0% 0%,#4a2340 0%,transparent 60%),radial-gradient(90% 60% at 100% 10%,#3b1f5c 0%,transparent 60%),radial-gradient(120% 70% at 50% 100%,#1f2a5c 0%,transparent 65%),linear-gradient(170deg,#1c1222,#22132b 50%,#141a30); --panel:#241c2b; --fg:#f1eef5; --muted:#a59fb0; --line:#3a3542;
   --head:#f3d6b6; --head-fg:#1d1a22; --accent:#f06292;
   --ok:#7fd8a4; --ok-bg:#163526; --warn:#f3c26b; --warn-bg:#3a2c10; --bad:#ff9b92; --bad-bg:#40191a; --info:#9dbcf5; --info-bg:#1b2a47; color-scheme:dark}
-body{background:var(--bg);color:var(--fg);font-family:var(--display)}
+body{background-color:var(--bg);background-image:var(--bggrad);background-attachment:fixed;min-height:100vh;color:var(--fg);font-family:var(--display)}
+.tabs{background:color-mix(in srgb,var(--panel) 70%,transparent);border-radius:10px 10px 0 0;padding-inline:4px}
 .wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:20px 40px;display:flex;flex-direction:column;gap:18px}
 header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
 h1{font-size:clamp(22px,5vw,30px);font-weight:800;margin:0;letter-spacing:-.01em;text-wrap:balance}
