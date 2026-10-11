@@ -16,7 +16,19 @@ jobs:
         with: { gradle-version: '8.10.2' }
       - name: APK bauen
         working-directory: android
-        run: gradle assembleRelease --no-daemon
+        run: |
+          set -o pipefail
+          gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee ../build.log
+      - name: Fehlerlog speichern
+        if: failure()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          tail -150 build.log > android-build-fehler.txt
+          git add android-build-fehler.txt
+          git commit -m "Build-Fehlerlog"
+          git pull --rebase
+          git push
       - name: APK veröffentlichen
         run: |
           cp android/app/build/outputs/apk/release/app-release.apk Arbeitsplan.apk
