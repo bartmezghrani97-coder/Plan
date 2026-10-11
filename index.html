@@ -187,7 +187,9 @@ const DAYS=[];D.weeks.forEach((w,wi)=>w.days.forEach((d,di)=>{
   const gard=(w.gard||[]).filter(x=>x[0]===di).map(x=>[x[1],x[2],x[3],x[4]]);
   DAYS.push({...d,wi,di,door,gard,ev:d.ev.filter(Boolean)});}));
 /* Änderungen nach Veröffentlichung: {date:"JJJJ-MM-TT", text:"…", mark:[["JJJJ-MM-TT","Name"],…]} */
-const CHANGES=[{date:"2026-10-11",text:"So 11.10: Carlos ist krank, Bart übernimmt (22:00 – 04:00)",mark:[["2026-10-11","Bart"]]},{date:"2026-10-10",text:"Fr 23.10: Shawn arbeitet nicht (23:00 – 06:00), die Schicht ist noch offen",mark:[]}];
+const CHANGES=[{date:"2026-10-11",day:"2026-10-11",text:"So 11.10: Carlos ist krank, Bart übernimmt (22:00 – 04:00)",mark:[["2026-10-11","Bart"]]},{date:"2026-10-10",day:"2026-10-23",text:"Fr 23.10: Shawn arbeitet nicht (23:00 – 06:00), die Schicht ist noch offen",mark:[]}];
+/* a change disappears once the day it concerns is over (day switches at 09:00) */
+const CHG=CHANGES.filter(ch=>(ch.day||ch.date)>=todayIso);
 const DJS={"2026-09-30": "Rubi", "2026-10-02": "Ivo Bischoff", "2026-10-03": "Konsi", "2026-10-07": "Tio Nacho", "2026-10-09": "Mikki_P", "2026-10-10": "U-Seven", "2026-10-14": "Tio Nacho", "2026-10-16": "Paderkid", "2026-10-17": "Jamez", "2026-10-21": "Valmondd", "2026-10-23": "Marc Lime", "2026-10-24": "Caramel Mafia", "2026-10-28": "Valmondd", "2026-10-30": "Mikki_P", "2026-10-31": "Jordan Snapper"};
 const djTime=di=>di===2?"22:00 – 03:00":"22:00 – 05:00";
 const longDay=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
@@ -231,10 +233,10 @@ document.querySelectorAll("#weeks .week").forEach((wk,wi)=>{const days=D.weeks[w
 /* changed shifts get a marker */
 document.querySelectorAll("#weeks .week").forEach((wk,wi)=>{const days=D.weeks[wi].days;
   wk.querySelectorAll("tr").forEach(tr=>{if(tr.children.length!==7)return;
-    [...tr.children].forEach((c,di)=>{if(c.dataset.n&&CHANGES.some(ch=>ch.mark.some(([iso,n])=>iso===days[di].iso&&n===c.dataset.n)))c.classList.add("chg");});});});
-(function(){const box=document.getElementById("chgbox");if(!CHANGES.length){box.hidden=true;return;}
+    [...tr.children].forEach((c,di)=>{if(c.dataset.n&&CHG.some(ch=>ch.mark.some(([iso,n])=>iso===days[di].iso&&n===c.dataset.n)))c.classList.add("chg");});});});
+(function(){const box=document.getElementById("chgbox");if(!CHG.length){box.hidden=true;return;}
   const fmt=iso=>iso.slice(8,10)+"."+iso.slice(5,7);
-  const list=[...CHANGES].sort((a,b)=>b.date.localeCompare(a.date));
+  const list=[...CHG].sort((a,b)=>b.date.localeCompare(a.date));
   box.innerHTML=`<span class="chgtitle"><i class="dot"></i>Änderungen</span><ul>${list.map(c=>`<li><b>${fmt(c.date)}</b> · ${esc(c.text)}</li>`).join("")}</ul>`;box.hidden=false;})();
 (function(){const n=new Date();let m=new Date(n.getFullYear(),n.getMonth(),n.getDate(),DAY_START,0,5);if(m<=n)m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,DAY_START,0,5);setTimeout(()=>location.reload(),m-n);})();
 let sel=null;
