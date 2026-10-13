@@ -113,6 +113,9 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
 .hrs small{color:var(--muted);font-weight:500}
 @media (max-width:420px){.row{grid-template-columns:80px 1fr auto}.krow{grid-template-columns:84px 1fr auto}.team .m{grid-template-columns:96px 1fr}}
 @media (prefers-reduced-motion:reduce){.s{transition:none}}
+.djrow.past{opacity:.55}
+.djrow.today{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.djrow .dj{font-weight:800;font-size:15px}
 </style>
 <div class="bunting" aria-hidden="true"></div>
 <div class="wrap">
@@ -129,6 +132,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
     <button class="tab" role="tab" id="tab-persoon" data-v="persoon">Pro Person</button>
     <button class="tab" role="tab" id="tab-sleutels" data-v="sleutels">Schlüssel</button>
     <button class="tab" role="tab" id="tab-uren" data-v="uren">Stunden</button>
+    <button class="tab" role="tab" id="tab-djs" data-v="djs">DJ-Plan</button>
   </nav>
 
   <section class="view" id="v-start" role="tabpanel" hidden>
@@ -138,6 +142,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
       <button type="button" class="tile" data-go="persoon"><span class="ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="16" r="6"/><circle cx="32" cy="16" r="6"/><path d="M5 41c1-8 5-12 12-12s11 4 12 12M24 30c2-1 5-1 8-1c6 0 10 4 11 12"/></g></svg></span><span class="tl">Pro Person</span></button>
       <button type="button" class="tile" data-go="sleutels"><span class="ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="3"/><path d="M23 23l17 17M33 33l4-4M37 37l4-4"/></g></svg></span><span class="tl">Schlüssel</span></button>
       <button type="button" class="tile" data-go="uren"><span class="ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="29" width="7" height="13"/><rect x="20" y="20" width="7" height="22"/><rect x="32" y="10" width="7" height="32"/><path d="M5 42h38"/></g></svg></span><span class="tl">Stunden</span></button>
+      <button type="button" class="tile" data-go="djs"><span class="ic"><svg viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 30v-6a15 15 0 0 1 30 0v6"/><rect x="6" y="28" width="8" height="13" rx="3"/><rect x="34" y="28" width="8" height="13" rx="3"/></g></svg></span><span class="tl">DJ-Plan</span></button>
     </div>
   </section>
 
@@ -168,6 +173,10 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   <section class="view" id="v-uren" role="tabpanel" hidden>
     <p class="hint">Stunden pro Woche (Mo–So), berechnet aus den Schichten im Plan. In Klammern die Anzahl der Tage.</p>
     <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
+  </section>
+  <section class="view" id="v-djs" role="tabpanel" hidden>
+    <p class="hint">Wer an welchem Abend auflegt. Set-Zeiten: Mittwoch 22:00 – 03:00, Freitag und Samstag 22:00 – 05:00.</p>
+    <div id="djlist" style="display:flex;flex-direction:column;gap:14px"></div>
   </section>
 </div>
 <script>
@@ -330,8 +339,23 @@ if(window.ResizeObserver){const ro=new ResizeObserver(()=>frameToday());document
 function scrollToday(){const th=document.querySelector("#weeks .date.today");if(!th)return;const wk=th.closest(".week");
   wk.scrollIntoView({block:"start"});const sc=th.closest(".scroll");sc.scrollLeft=Math.max(0,th.offsetLeft-sc.clientWidth/2+th.offsetWidth/2);}
 
+/* DJ-Plan: one card per week, nights with a DJ */
+(function(){const box=document.getElementById("djlist");const wk=new Map();
+  const isoWeek=dt=>{const d=new Date(Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate()));const n=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-n);const y=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil(((d-y)/864e5+1)/7);};
+  D.weeks.forEach(w=>w.days.forEach(d=>{const dj=DJS[d.iso];if(!dj)return;const dt=new Date(d.iso+"T12:00");const k=isoWeek(dt);if(!wk.has(k))wk.set(k,[]);wk.get(k).push({d,dj,dt});}));
+  wk.forEach((items,k)=>{const c=document.createElement("div");c.className="card";const h=document.createElement("h2");h.textContent="Woche "+k;c.appendChild(h);
+    const ul=document.createElement("ul");ul.className="list";
+    items.forEach(({d,dj,dt})=>{const li=document.createElement("li");li.className="row djrow"+(d.iso<todayIso?" past":"")+(d.iso===todayIso?" today":"");
+      const wed=dt.getDay()===3;const ev=(d.ev&&(d.ev[1]||d.ev[0]))||"";
+      li.innerHTML='<span class="d"></span><span class="e"><span class="dj"></span><br><span class="evn"></span></span><span class="pill"></span>';
+      li.querySelector(".d").textContent=d.date.replace(/\.26$/,"");li.querySelector(".dj").textContent=dj;li.querySelector(".evn").textContent=ev;
+      const p=li.querySelector(".pill");p.textContent=wed?"22:00 – 03:00":"22:00 – 05:00";p.style.background="var(--head)";p.style.color="var(--head-fg)";
+      ul.appendChild(li);});
+    c.appendChild(ul);box.appendChild(c);});
+})();
+
 /* Tabs */
-const VIEWS=["start","schema","vandaag","persoon","sleutels","uren"];
+const VIEWS=["start","schema","vandaag","persoon","sleutels","uren","djs"];
 function show(v){if(!VIEWS.includes(v))v="schema";
   VIEWS.forEach(x=>{document.getElementById("v-"+x).hidden=x!==v;document.getElementById("tab-"+x).setAttribute("aria-selected",x===v);});
   try{localStorage.setItem("ap-view",v)}catch(e){}}
