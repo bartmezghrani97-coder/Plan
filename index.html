@@ -114,6 +114,8 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
 @media (max-width:420px){.row{grid-template-columns:80px 1fr auto}.krow{grid-template-columns:84px 1fr auto}.team .m{grid-template-columns:96px 1fr}}
 @media (prefers-reduced-motion:reduce){.s{transition:none}}
 .djrow.past{opacity:.55}
+.djweek{scroll-margin-top:calc(14px + env(safe-area-inset-top,0px))}
+.djweek.current{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .djrow.today{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .djrow .dj{font-weight:800;font-size:15px}
 </style>
@@ -343,7 +345,7 @@ function scrollToday(){const th=document.querySelector("#weeks .date.today");if(
 (function(){const box=document.getElementById("djlist");const wk=new Map();
   const isoWeek=dt=>{const d=new Date(Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate()));const n=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-n);const y=new Date(Date.UTC(d.getUTCFullYear(),0,1));return Math.ceil(((d-y)/864e5+1)/7);};
   D.weeks.forEach(w=>w.days.forEach(d=>{const dj=DJS[d.iso];if(!dj)return;const dt=new Date(d.iso+"T12:00");const k=isoWeek(dt);if(!wk.has(k))wk.set(k,[]);wk.get(k).push({d,dj,dt});}));
-  wk.forEach((items,k)=>{const c=document.createElement("div");c.className="card";const h=document.createElement("h2");h.textContent="Woche "+k;c.appendChild(h);
+  const curW=isoWeek(now);wk.forEach((items,k)=>{const c=document.createElement("div");c.className="card djweek"+(k===curW?" current":"");const h=document.createElement("h2");h.textContent="Woche "+k;c.appendChild(h);
     const ul=document.createElement("ul");ul.className="list";
     items.forEach(({d,dj,dt})=>{const li=document.createElement("li");li.className="row djrow"+(d.iso<todayIso?" past":"")+(d.iso===todayIso?" today":"");
       const wed=dt.getDay()===3;const ev=(d.ev&&(d.ev[1]||d.ev[0]))||"";
@@ -354,17 +356,18 @@ function scrollToday(){const th=document.querySelector("#weeks .date.today");if(
     c.appendChild(ul);box.appendChild(c);});
 })();
 
+function scrollDJ(){const c=document.querySelector(".djweek.current");if(c)c.scrollIntoView({block:"start"});}
 /* Tabs */
 const VIEWS=["start","schema","vandaag","persoon","sleutels","uren","djs"];
 function show(v){if(!VIEWS.includes(v))v="schema";
   VIEWS.forEach(x=>{document.getElementById("v-"+x).hidden=x!==v;document.getElementById("tab-"+x).setAttribute("aria-selected",x===v);});
   try{localStorage.setItem("ap-view",v)}catch(e){}}
-document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b){show(b.dataset.v);if(b.dataset.v==="schema"){frameToday();scrollToday();}}});
+document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(b){show(b.dataset.v);if(b.dataset.v==="schema"){frameToday();scrollToday();}if(b.dataset.v==="djs")scrollDJ();}});
 let start=(location.hash||"").slice(1);if(!VIEWS.includes(start))start="start";
 document.getElementById("todaynum").textContent=pad(now.getDate());
-document.querySelector(".tiles").addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;show(t.dataset.go);window.scrollTo(0,0);if(t.dataset.go==="schema"){frameToday();scrollToday();}});
+document.querySelector(".tiles").addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;show(t.dataset.go);window.scrollTo(0,0);if(t.dataset.go==="schema"){frameToday();scrollToday();}if(t.dataset.go==="djs")scrollDJ();});
 show(start);
-if(start==="schema")requestAnimationFrame(scrollToday);
+if(start==="schema")requestAnimationFrame(scrollToday);if(start==="djs")requestAnimationFrame(scrollDJ);
 requestAnimationFrame(frameToday);document.fonts&&document.fonts.ready.then(frameToday);
 </script>
 </body></html>
