@@ -291,7 +291,7 @@ let di=todayIdx;
 const stLabel={ok:"Schlüssel ok",geregeld:"Schlüssel geregelt",nakijken:"Schlüssel prüfen",probleem:"Problem mit dem Schlüssel"};
 function renderDay(){if(!DAYS.length)return;
   const d=DAYS[di];const k=d.keys;
-  const team=d.shifts.map(([t,n])=>`<div class="m">${n==="OPEN"?'<span class="pill" style="border-style:dashed">Noch offen</span>':pill(n)}<span>${esc(t)} <span class="muted">· ${fmtH(hours(t))} Std.</span></span></div>`).join("");
+  const team=d.shifts.map(([t,n])=>`<div class="m">${n==="OPEN"?'<span class="pill" style="border:1.5px dashed var(--bad);color:var(--bad);background:transparent">Noch offen</span>':pill(n)}<span>${esc(t)} <span class="muted">· ${fmtH(hours(t))} Std.</span></span></div>`).join("");
   const gard=d.gard.length?`<div class="muted" style="font-weight:700">Garderobe</div><div class="team">${d.gard.map(([t,n])=>`<div class="m">${pill(n)}<span>${esc(t)} <span class="muted">· ${fmtH(hours(t))} Std.</span></span></div>`).join("")}</div>`:"";
   const door=d.door.length?`<div class="muted" style="font-weight:700">Tür</div><div class="team">${d.door.map(([t,n])=>`<div class="m">${pill(n)}<span>${esc(t)} <span class="muted">· ${fmtH(hours(t))} Std.</span></span></div>`).join("")}</div>`:"";
   const diff=Math.round((Date.parse(d.iso)-Date.parse(todayIso))/864e5);
