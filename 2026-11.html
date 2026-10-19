@@ -207,7 +207,7 @@ const pad=n=>String(n).padStart(2,"0");
 const DAY_START=9;const _n=new Date();const now=_n.getHours()<DAY_START?new Date(_n.getFullYear(),_n.getMonth(),_n.getDate()-1,12):_n;const todayIso=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
 /* month meta: which month this page shows, and all months for the menu (newest first) */
 const META={"key": "2026-11", "name": "November 2026", "range": "02.11 – 29.11", "start": "2026-11-02", "end": "2026-11-29", "plan": false};
-const MONTHS=[{"key": "2026-11", "name": "November 2026", "plan": false}, {"key": "2026-10", "name": "Oktober 2026", "plan": true}];
+const MONTHS=[{"key": "2026-12", "name": "Dezember 2026", "plan": false}, {"key": "2026-11", "name": "November 2026", "plan": false}, {"key": "2026-10", "name": "Oktober 2026", "plan": true}];
 const D={"weeks":[],"legend":[["Carlos","000000","FFFFFF"],["Hannes","A4C2F4","000000"],["Gabriel","FFFF00","000000"],["Shawn","FF9900","000000"],["Joél","0000FF","FFFFFF"],["Uwe T.","00FFFF","000000"],["Levent","CCCCCC","FF0000"],["Bart","45818E","FFFFFF"],["Enzo","93C47D","000000"],["Paolo","EAD1DC","FF00FF"],["Andrea","FF0000","FFFF00"],["Cristian","00FF00","000000"],["Roberto","BF9000","000000"],["Diego","CC4125","000000"],["Cristobal","9900FF","FFFFFF"]]};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const COL={};D.legend.forEach(([n,f,fc])=>COL[n]=[f,fc]);
@@ -224,6 +224,8 @@ const CHANGES=[];
 /* a change disappears once the day it concerns is over (day switches at 09:00) */
 const CHG=CHANGES.filter(ch=>(ch.day||ch.date)>=todayIso);
 const DJS={"2026-11-06": "Caramel Mafia", "2026-11-07": "Jordan Snapper", "2026-11-13": "U-Seven", "2026-11-14": "Ivo Bischoff", "2026-11-20": "Konsi", "2026-11-21": "Marc Lime", "2026-11-27": "Jamez", "2026-11-28": "Mikki_P"};
+/* abweichende Set-Zeiten / Abende: {"JJJJ-MM-TT":{"t":"22:00 – 04:00","ev":"Silvester"}} */
+const DJX={};
 const djTime=di=>di===2?"22:00 – 03:00":"22:00 – 05:00";
 const longDay=["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"];
 const KW=w=>"Woche "+(40+w);
@@ -373,10 +375,10 @@ function scrollToday(){const th=document.querySelector("#weeks .date.today");if(
   const curW=isoWeek(now);wk.forEach((items,k)=>{const c=document.createElement("div");c.className="card djweek"+(k===curW?" current":"");const h=document.createElement("h2");h.textContent="Woche "+k;c.appendChild(h);
     const ul=document.createElement("ul");ul.className="list";
     items.forEach(({d,dj,dt})=>{const li=document.createElement("li");li.className="row djrow"+(d.iso<todayIso?" past":"")+(d.iso===todayIso?" today":"");
-      const wed=dt.getDay()===3;const ev=(d.ev&&(d.ev[1]||d.ev[0]))||"";
+      const wed=dt.getDay()===3;const ev=(DJX[d.iso]&&DJX[d.iso].ev)||(d.ev&&(d.ev[1]||d.ev[0]))||"";
       li.innerHTML='<span class="d"></span><span class="e"><span class="dj"></span><br><span class="evn"></span></span><span class="pill"></span>';
       li.querySelector(".d").textContent=d.date.replace(/\.26$/,"");li.querySelector(".dj").textContent=dj;li.querySelector(".evn").textContent=ev;
-      const p=li.querySelector(".pill");p.textContent=wed?"22:00 – 03:00":"22:00 – 05:00";p.style.background="var(--head)";p.style.color="var(--head-fg)";
+      const p=li.querySelector(".pill");p.textContent=(DJX[d.iso]&&DJX[d.iso].t)||(wed?"22:00 – 03:00":"22:00 – 05:00");p.style.background="var(--head)";p.style.color="var(--head-fg)";
       ul.appendChild(li);});
     c.appendChild(ul);box.appendChild(c);});
 })();
