@@ -131,6 +131,10 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
 .pdfbtn svg{width:18px;height:18px}
 .pdfbtn:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
 #noplan{flex-direction:column;gap:4px}
+.pdfrow{display:flex;gap:8px;align-self:flex-start}
+.pdfshare{width:42px;border:0;border-radius:10px;background:var(--panel);border:1px solid var(--line);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.pdfshare svg{width:20px;height:20px}
+.pdfrow .pdfbtn{align-self:auto}
 </style>
 <div class="bunting" aria-hidden="true"></div>
 <div class="wrap">
@@ -166,7 +170,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   </section>
 
   <section class="view" id="v-schema" role="tabpanel">
-    <a class="pdfbtn" id="pdf-plan" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Arbeitsplan als PDF</a>
+    <div class="pdfrow" id="pdfrow-plan"><a class="pdfbtn" id="pdf-plan" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Arbeitsplan als PDF</a><button type="button" class="pdfshare" data-for="pdf-plan" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg></button></div>
     <div class="legend" id="legend"></div>
     <p class="hint">Tippe auf einen Namen, um nur seine Schichten zu sehen. Nochmal tippen zeigt wieder alles.</p>
     <p class="count" id="count"></p>
@@ -195,7 +199,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
     <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
   </section>
   <section class="view" id="v-djs" role="tabpanel" hidden>
-    <a class="pdfbtn" id="pdf-dj" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>DJ-Plan als PDF</a>
+    <div class="pdfrow" id="pdfrow-dj"><a class="pdfbtn" id="pdf-dj" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>DJ-Plan als PDF</a><button type="button" class="pdfshare" data-for="pdf-dj" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg></button></div>
     <p class="hint">Wer an welchem Abend auflegt. Set-Zeiten: Mittwoch 22:00 – 03:00, Freitag und Samstag 22:00 – 05:00.</p>
     <div id="djlist" style="display:flex;flex-direction:column;gap:14px"></div>
   </section>
@@ -389,7 +393,7 @@ function scrollDJ(){const c=document.querySelector(".djweek.current");if(c)c.scr
   document.getElementById("msub").textContent=META.range+" · Boyberry";document.title=(META.plan?"Arbeitsplan ":"DJ-Plan ")+META.name;
   const fn=META.name.replace(" ","_");document.getElementById("pdf-plan").href="pdf/Arbeitsplan_"+fn+".pdf";document.getElementById("pdf-dj").href="pdf/DJ-Plan_"+fn+".pdf";
   const site=/github\.io$/.test(location.hostname)||location.protocol==="file:";
-  if(!site){document.getElementById("pdf-plan").hidden=true;document.getElementById("pdf-dj").hidden=true;}
+  if(!site){document.getElementById("pdfrow-plan").hidden=true;document.getElementById("pdfrow-dj").hidden=true;}
   const btn=document.getElementById("mbtn"),menu=document.getElementById("mmenu");
   if(!site||MONTHS.length<2){btn.querySelector(".chev").style.display="none";btn.style.cursor="default";btn.disabled=true;}
   else{menu.innerHTML=MONTHS.map(m=>`<a href="${m.key}.html"${m.key===META.key?' aria-current="page"':""}>${esc(m.name)}</a>`).join("");
@@ -401,13 +405,16 @@ function scrollDJ(){const c=document.querySelector(".djweek.current");if(c)c.scr
     ["schema","vandaag","persoon","sleutels","uren"].forEach(v=>{document.getElementById("tab-"+v).hidden=true;const t=document.querySelector('.tile[data-go="'+v+'"]');if(t)t.hidden=true;});}
 })();
 
-/* PDF: auf dem Handy über das Teilen-Menü (Speichern, Drucken, WhatsApp), sonst in neuem Tab öffnen */
-document.querySelectorAll(".pdfbtn").forEach(a=>a.addEventListener("click",async e=>{
-  if(!navigator.canShare)return;e.preventDefault();const url=a.href,name=decodeURIComponent(url.split("/").pop());
-  try{const r=await fetch(url,{cache:"no-store"});const f=new File([await r.blob()],name,{type:"application/pdf"});
-    if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return;}}
-  catch(err){if(err&&err.name==="AbortError")return;}
-  window.open(url,"_blank");}));
+/* PDF: Download-Knopf lädt die Datei herunter (in der Android-App über Chrome), der Teilen-Knopf öffnet das Teilen-Menü */
+const ANDROID_APP=/Android/i.test(navigator.userAgent)&&matchMedia("(display-mode: standalone)").matches;
+document.querySelectorAll(".pdfbtn").forEach(a=>a.addEventListener("click",e=>{
+  if(!ANDROID_APP)return;e.preventDefault();const u=new URL(a.href);
+  location.href="intent://"+u.host+u.pathname+"#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+encodeURIComponent(u.href)+";end";}));
+document.querySelectorAll(".pdfshare").forEach(b=>{if(!navigator.canShare){b.hidden=true;return;}
+  b.addEventListener("click",async()=>{const url=document.getElementById(b.dataset.for).href,name=decodeURIComponent(url.split("/").pop());
+    try{const r=await fetch(url,{cache:"no-store"});const f=new File([await r.blob()],name,{type:"application/pdf"});
+      if(navigator.canShare({files:[f]}))await navigator.share({files:[f],title:name});else window.open(url,"_blank");}
+    catch(err){if(!err||err.name!=="AbortError")window.open(url,"_blank");}});});
 
 /* Tabs */
 const VIEWS=["start","schema","vandaag","persoon","sleutels","uren","djs"];
