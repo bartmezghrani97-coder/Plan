@@ -132,8 +132,10 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
 .pdfbtn:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
 #noplan{flex-direction:column;gap:4px}
 .pdfrow{display:flex;gap:8px;align-self:flex-start}
-.pdfshare{width:42px;border:0;border-radius:10px;background:var(--panel);border:1px solid var(--line);color:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.pdfshare svg{width:20px;height:20px}
+.pdfshare{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:0;border-radius:10px;background:var(--accent);color:var(--panel);font:700 14px/1 var(--display);cursor:pointer}
+.pdfshare svg{width:18px;height:18px}
+.pdfshare:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.pdfshare[hidden]{display:none}
 .pdfrow .pdfbtn{align-self:auto}
 </style>
 <div class="bunting" aria-hidden="true"></div>
@@ -170,7 +172,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   </section>
 
   <section class="view" id="v-schema" role="tabpanel">
-    <div class="pdfrow" id="pdfrow-plan"><a class="pdfbtn" id="pdf-plan" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Arbeitsplan als PDF</a><button type="button" class="pdfshare" data-for="pdf-plan" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg></button></div>
+    <div class="pdfrow" id="pdfrow-plan"><a class="pdfbtn" id="pdf-plan" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF herunterladen</a><button type="button" class="pdfshare" data-for="pdf-plan" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg>Teilen</button></div>
     <div class="legend" id="legend"></div>
     <p class="hint">Tippe auf einen Namen, um nur seine Schichten zu sehen. Nochmal tippen zeigt wieder alles.</p>
     <p class="count" id="count"></p>
@@ -199,7 +201,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
     <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
   </section>
   <section class="view" id="v-djs" role="tabpanel" hidden>
-    <div class="pdfrow" id="pdfrow-dj"><a class="pdfbtn" id="pdf-dj" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>DJ-Plan als PDF</a><button type="button" class="pdfshare" data-for="pdf-dj" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg></button></div>
+    <div class="pdfrow" id="pdfrow-dj"><a class="pdfbtn" id="pdf-dj" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF herunterladen</a><button type="button" class="pdfshare" data-for="pdf-dj" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg>Teilen</button></div>
     <p class="hint">Wer an welchem Abend auflegt. Set-Zeiten: Mittwoch 22:00 – 03:00, Freitag und Samstag 22:00 – 05:00.</p>
     <div id="djlist" style="display:flex;flex-direction:column;gap:14px"></div>
   </section>
