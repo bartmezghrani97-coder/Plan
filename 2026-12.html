@@ -174,7 +174,6 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   <section class="view" id="v-schema" role="tabpanel">
     <div class="pdfrow" id="pdfrow-plan"><a class="pdfbtn" id="pdf-plan" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF herunterladen</a><button type="button" class="pdfshare" data-for="pdf-plan" aria-label="PDF teilen"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></g></svg>Teilen</button></div>
     <div class="legend" id="legend"></div>
-    <p class="hint">Tippe auf einen Namen, um nur seine Schichten zu sehen. Nochmal tippen zeigt wieder alles.</p>
     <p class="count" id="count"></p>
     <div id="weeks" style="display:flex;flex-direction:column;gap:14px"></div>
   </section>
@@ -190,14 +189,12 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   </section>
 
   <section class="view" id="v-sleutels" role="tabpanel" hidden>
-    <p class="hint">Schlüssel: Paolo, Gabriel, Hannes, Andrea · Bart (Mi, Fr, Sa). Jeder Schlüssel öffnet und schließt.</p>
     <div class="stats" id="kstats"></div>
     <label class="toggle"><input type="checkbox" id="konly"> Nur Tage mit Handlungsbedarf</label>
     <div class="keys" id="klist"></div>
   </section>
 
   <section class="view" id="v-uren" role="tabpanel" hidden>
-    <p class="hint">Stunden pro Woche (Mo–So), berechnet aus den Schichten im Plan. In Klammern die Anzahl der Tage.</p>
     <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
   </section>
   <section class="view" id="v-djs" role="tabpanel" hidden>
