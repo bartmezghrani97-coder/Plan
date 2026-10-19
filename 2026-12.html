@@ -166,7 +166,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
   </section>
 
   <section class="view" id="v-schema" role="tabpanel">
-    <a class="pdfbtn" id="pdf-plan" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Arbeitsplan als PDF</a>
+    <a class="pdfbtn" id="pdf-plan" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Arbeitsplan als PDF</a>
     <div class="legend" id="legend"></div>
     <p class="hint">Tippe auf einen Namen, um nur seine Schichten zu sehen. Nochmal tippen zeigt wieder alles.</p>
     <p class="count" id="count"></p>
@@ -195,7 +195,7 @@ table.hrs{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;fon
     <div class="card"><div class="scroll"><table class="hrs" id="hrs"></table></div></div>
   </section>
   <section class="view" id="v-djs" role="tabpanel" hidden>
-    <a class="pdfbtn" id="pdf-dj" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>DJ-Plan als PDF</a>
+    <a class="pdfbtn" id="pdf-dj" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>DJ-Plan als PDF</a>
     <p class="hint">Wer an welchem Abend auflegt. Set-Zeiten: Mittwoch 22:00 – 03:00, Freitag und Samstag 22:00 – 05:00.</p>
     <div id="djlist" style="display:flex;flex-direction:column;gap:14px"></div>
   </section>
@@ -400,6 +400,14 @@ function scrollDJ(){const c=document.querySelector(".djweek.current");if(c)c.scr
   if(!META.plan){const np=document.getElementById("noplan");np.hidden=false;np.style.display="flex";document.getElementById("noplan-t").textContent="Der Arbeitsplan für "+META.name.split(" ")[0]+" ist noch nicht online.";
     ["schema","vandaag","persoon","sleutels","uren"].forEach(v=>{document.getElementById("tab-"+v).hidden=true;const t=document.querySelector('.tile[data-go="'+v+'"]');if(t)t.hidden=true;});}
 })();
+
+/* PDF: auf dem Handy über das Teilen-Menü (Speichern, Drucken, WhatsApp), sonst in neuem Tab öffnen */
+document.querySelectorAll(".pdfbtn").forEach(a=>a.addEventListener("click",async e=>{
+  if(!navigator.canShare)return;e.preventDefault();const url=a.href,name=decodeURIComponent(url.split("/").pop());
+  try{const r=await fetch(url,{cache:"no-store"});const f=new File([await r.blob()],name,{type:"application/pdf"});
+    if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return;}}
+  catch(err){if(err&&err.name==="AbortError")return;}
+  window.open(url,"_blank");}));
 
 /* Tabs */
 const VIEWS=["start","schema","vandaag","persoon","sleutels","uren","djs"];
