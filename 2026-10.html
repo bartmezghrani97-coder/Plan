@@ -390,7 +390,7 @@ function scrollDJ(){const c=document.querySelector(".djweek.current");if(c)c.scr
   if(!site){document.getElementById("pdf-plan").hidden=true;document.getElementById("pdf-dj").hidden=true;}
   const btn=document.getElementById("mbtn"),menu=document.getElementById("mmenu");
   if(!site||MONTHS.length<2){btn.querySelector(".chev").style.display="none";btn.style.cursor="default";btn.disabled=true;}
-  else{menu.innerHTML=MONTHS.map(m=>`<a href="${m.key}.html"${m.key===META.key?' aria-current="page"':""}>${esc(m.name)}<small>${m.plan?"Arbeitsplan + DJ-Plan":"nur DJ-Plan"}</small></a>`).join("");
+  else{menu.innerHTML=MONTHS.map(m=>`<a href="${m.key}.html"${m.key===META.key?' aria-current="page"':""}>${esc(m.name)}</a>`).join("");
     const close=()=>{menu.hidden=true;btn.setAttribute("aria-expanded","false");};
     btn.addEventListener("click",e=>{e.stopPropagation();const o=menu.hidden;menu.hidden=!o;btn.setAttribute("aria-expanded",String(o));});
     document.addEventListener("click",e=>{if(!menu.hidden&&!menu.contains(e.target))close();});
