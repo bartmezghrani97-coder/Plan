@@ -22,6 +22,9 @@ endobj
 /Resources <<
 /Font 5 0 R
 /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+/ExtGState <<
+/gRLs0 9 0 R
+>>
 >>
 /Rotate 0
 /Trans <<
@@ -30,13 +33,14 @@ endobj
 >>
 endobj
 4 0 obj
-[ 10 0 R 11 0 R ]
+[ 12 0 R 13 0 R ]
 endobj
 5 0 obj
 <<
 /F1 6 0 R
+/F1-0 10 0 R
 /F2 7 0 R
-/F2-0 9 0 R
+/F2-0 11 0 R
 >>
 endobj
 6 0 obj
@@ -60,10 +64,10 @@ endobj
 8 0 obj
 <<
 /Author (anonymous)
-/CreationDate (D\07220261021221556\05302\04700\047)
+/CreationDate (D\07220261021224259\05302\04700\047)
 /Creator (anonymous)
 /Keywords ()
-/ModDate (D\07220261021221556\05302\04700\047)
+/ModDate (D\07220261021224259\05302\04700\047)
 /Producer (ReportLab PDF Library \055 \050opensource\051)
 /Subject (unspecified)
 /Title (DJ\055Plan November 2026)
@@ -72,15 +76,29 @@ endobj
 endobj
 9 0 obj
 <<
+/Type /ExtGState
+/ca 0.14
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+>>
+endobj
+11 0 obj
+<<
 /Type /Font
 /Subtype /Type1
 /BaseFont /Helvetica-Bold
 /Encoding /WinAnsiEncoding
 >>
 endobj
-10 0 obj
+12 0 obj
 <<
-/Length 7157
+/Length 7146
 >>
 stream
 q
@@ -102,10 +120,10 @@ BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 110 675.8898 Tm (Mittwoch) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F2 13 Tf 15.6 TL ET
-BT 1 0 0 1 210 675.8898 Tm  T* ET
+BT 1 0 0 1 210 675.8898 Tm (Tio Nacho) Tj T* ET
 BT /F1 10 Tf 12 TL ET
 .533333 .529412 .501961 rg
-BT 1 0 0 1 210 675.8898 Tm (Noche latina \226 DJ noch offen) Tj T* ET
+BT 1 0 0 1 280.842 675.8898 Tm (Noche latina) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 475.9996 675.8898 Tm (22:00 \226 03:00) Tj T* ET
@@ -153,10 +171,10 @@ BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 110 573.8898 Tm (Mittwoch) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F2 13 Tf 15.6 TL ET
-BT 1 0 0 1 210 573.8898 Tm  T* ET
+BT 1 0 0 1 210 573.8898 Tm (Valmondd) Tj T* ET
 BT /F1 10 Tf 12 TL ET
 .533333 .529412 .501961 rg
-BT 1 0 0 1 210 573.8898 Tm (Noche latina \226 DJ noch offen) Tj T* ET
+BT 1 0 0 1 280.842 573.8898 Tm (Noche latina) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 475.9996 573.8898 Tm (22:00 \226 03:00) Tj T* ET
@@ -204,10 +222,10 @@ BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 110 471.8898 Tm (Mittwoch) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F2 13 Tf 15.6 TL ET
-BT 1 0 0 1 210 471.8898 Tm  T* ET
+BT 1 0 0 1 210 471.8898 Tm (Valmondd) Tj T* ET
 BT /F1 10 Tf 12 TL ET
 .533333 .529412 .501961 rg
-BT 1 0 0 1 210 471.8898 Tm (Noche latina \226 DJ noch offen) Tj T* ET
+BT 1 0 0 1 280.842 471.8898 Tm (Noche latina) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 475.9996 471.8898 Tm (22:00 \226 03:00) Tj T* ET
@@ -255,10 +273,10 @@ BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 110 369.8898 Tm (Mittwoch) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F2 13 Tf 15.6 TL ET
-BT 1 0 0 1 210 369.8898 Tm  T* ET
+BT 1 0 0 1 210 369.8898 Tm (Rubi) Tj T* ET
 BT /F1 10 Tf 12 TL ET
 .533333 .529412 .501961 rg
-BT 1 0 0 1 210 369.8898 Tm (Noche latina \226 DJ noch offen) Tj T* ET
+BT 1 0 0 1 246.886 369.8898 Tm (Noche latina) Tj T* ET
 .172549 .172549 .164706 rg
 BT /F1 11 Tf 13.2 TL ET
 BT 1 0 0 1 475.9996 369.8898 Tm (22:00 \226 03:00) Tj T* ET
@@ -313,15 +331,17 @@ Q
 
 endstream
 endobj
-11 0 obj
+13 0 obj
 <<
-/Length 7209
+/Length 7250
 >>
 stream
 q
-0.0 0.0 595.275591 841.889764 re
+0.0 0.0 595.2756 841.8898 re
 W
 n
+q
+1.205882 0 0 1.205882 -8.7454 -169.8135 cm
 q
 0.609 0.656 0.275 rg
 n
@@ -706,26 +726,28 @@ Q
 endstream
 endobj
 xref
-0 12
+0 14
 0000000000 65535 f 
 0000000015 00000 n 
 0000000083 00000 n 
 0000000142 00000 n 
-0000000341 00000 n 
-0000000374 00000 n 
-0000000427 00000 n 
-0000000534 00000 n 
-0000000646 00000 n 
-0000000951 00000 n 
-0000001053 00000 n 
-0000008263 00000 n 
+0000000371 00000 n 
+0000000404 00000 n 
+0000000471 00000 n 
+0000000578 00000 n 
+0000000690 00000 n 
+0000000995 00000 n 
+0000001042 00000 n 
+0000001140 00000 n 
+0000001243 00000 n 
+0000008442 00000 n 
 trailer
 <<
-/Size 12
+/Size 14
 /Root 1 0 R
 /Info 8 0 R
-/ID [ <7b3cecfe5d3d76020df8f6450802c181> <7b3cecfe5d3d76020df8f6450802c181> ]
+/ID [ <f6fbfd566b5bbbc1217260cfc6e7028d> <f6fbfd566b5bbbc1217260cfc6e7028d> ]
 >>
 startxref
-15525
+15745
 %%EOF
